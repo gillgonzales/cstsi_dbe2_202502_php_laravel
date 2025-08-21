@@ -5,7 +5,6 @@ class IMC{
 
     public static function toString() { 
             return self::class;//$this
-
      }
 
     public static function calc(Pessoa $objPessoa){
