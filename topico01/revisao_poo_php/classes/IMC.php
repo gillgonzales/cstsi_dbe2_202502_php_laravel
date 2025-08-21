@@ -12,7 +12,7 @@ class IMC{
         return;
     }
 
-    public static function classifica(Pessoa $objPessoa){
-        return self::calc($objPessoa);
+    public static function classifica(Pessoa $objPessoa):string{
+        return "IMC classificado...";
     }
 }
