@@ -1,0 +1,12 @@
+{
+    "name": "gvg/dbe2",
+    "require-dev": {
+        "psy/psysh": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gvg\\Dbe2\\": "src"
+        }
+    },
+    "require": {}
+}
