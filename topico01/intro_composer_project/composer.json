@@ -16,5 +16,8 @@
             "name": "Prof. Gill",
             "email": "gillgonzales@ifsul.edu.br"
         }
-    ]
+    ],
+    "require-dev": {
+        "psy/psysh": "@stable"
+    }
 }
