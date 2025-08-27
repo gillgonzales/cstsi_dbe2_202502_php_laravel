@@ -2,19 +2,20 @@
 namespace Gvg\Dbe2\classes;
 
 use Exception;
+use Gvg\Dbe2\interfaces\IMC;
 
-class Atleta extends Pessoa{
+class Atleta extends Pessoa implements IMC{
 
 	// public $altura, $peso;
 	private $imc;
 	
 	public function __construct($nome, $idade, $altura, $peso)
 	{
-		$this->nome = $nome;
-		$this->idade = $idade;
-		$this->altura = $altura;
-		$this->peso = $peso;
-		// parent::__construct($nome, $idade, $peso, $altura);
+		// $this->nome = $nome;
+		// $this->idade = $idade;
+		// $this->altura = $altura;
+		// $this->peso = $peso;
+		parent::__construct($nome, $idade, $peso, $altura);
 		$this->calcImc();
 	}
 
@@ -42,6 +43,31 @@ class Atleta extends Pessoa{
 		}else{
 			$this->$name = $value;
 		} 
+	}
+
+	public function calcImc():void 
+	{
+		try {
+			if(isset($this->peso)&&isset($this->altura)) {
+				$this->imc = $this->peso/$this->altura**2;		
+			} else{
+				throw new Exception("Erro, defina peso e altura primeiro!");
+			}
+		} catch (Exception $error) {
+			echo $error->getMessage();
+			foreach($error->getTrace() as $trace)
+				 print_r($trace);
+			throw $error;
+		}
+		finally{
+			$this->showImc();
+		}
+	}
+
+	public function showImc():void
+	{
+		if(is_numeric($this->imc))
+			echo "\nO IMC do $this->nome é: " . number_format($this->imc, 2) . "\n";
 	}
 
 
