@@ -1,7 +1,7 @@
 <?php
 namespace Gvg\Dbe2\classes;
 
-// use Exception;
+use Exception;
 
 class Atleta extends Pessoa{
 
@@ -29,15 +29,19 @@ class Atleta extends Pessoa{
 	}
 
 	public function __set($name, $value){
-		if($name=='imc')
+		
+		if($name=='imc'){
+		var_dump($name,$value);
 			if(is_array($value)){
-				if($value[0]>$value[1])
+				if($value[0] > $value[1])
 					$this->imc = $value[0]/$value[1]**2;
-				else echo "Erro, o primeiro valor deve ser o peso.";
+				else throw new Exception("Erro, o primeiro valor deve ser o peso.");
 			}else{
 				echo "Erro ao atualizar imc, esperado um array [peso, altura]";
 			}
-		else $this->$name = $value;
+		}else{
+			$this->$name = $value;
+		} 
 	}
 
 
