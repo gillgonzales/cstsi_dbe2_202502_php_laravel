@@ -8,5 +8,7 @@
             "Gvg\\Dbe2\\": "src"
         }
     },
-    "require": {}
+    "require": {
+        "illuminate/support": "^12.26"
+    }
 }
