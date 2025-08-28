@@ -10,5 +10,12 @@
     },
     "require": {
         "illuminate/support": "^12.26"
+    },
+    "scripts":{
+        "start":"php -S localhost:8090 -t src",
+        "psy": "./vendor/psy/psysh/bin/psysh"
+    },
+    "config": {
+        "process-timeout":0
     }
 }
