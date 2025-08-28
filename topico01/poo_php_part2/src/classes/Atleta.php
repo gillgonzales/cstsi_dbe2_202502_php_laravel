@@ -2,6 +2,7 @@
 namespace Gvg\Dbe2\classes;
 
 use Exception;
+use Gvg\Dbe2\classes\Abstracts\Pessoa;
 use Gvg\Dbe2\interfaces\IMC;
 
 class Atleta extends Pessoa implements IMC{
@@ -11,11 +12,11 @@ class Atleta extends Pessoa implements IMC{
 	
 	public function __construct($nome, $idade, $altura, $peso)
 	{
-		// $this->nome = $nome;
-		// $this->idade = $idade;
-		// $this->altura = $altura;
-		// $this->peso = $peso;
-		parent::__construct($nome, $idade, $peso, $altura);
+		$this->nome = $nome;
+		$this->idade = $idade;
+		$this->altura = $altura;
+		$this->peso = $peso;
+		// parent::__construct($nome, $idade, $peso, $altura); //Apenas para Pessoa Concreta
 		$this->calcImc();
 	}
 
@@ -70,13 +71,12 @@ class Atleta extends Pessoa implements IMC{
 			echo "\nO IMC do $this->nome é: " . number_format($this->imc, 2) . "\n";
 	}
 
-
 	public function __toString():string {
                $saida = "\n===Dados do ".self::class 
 			   ."==="
                ."\nNome: $this->nome"
                .($this->idade ? "\nIdade: $this->idade" : "")
-               ."\nPessoa: $this->peso"
+               ."\nPeso: $this->peso"
                ."\nAltura: $this->altura";
 
 		$saida .= (isset($this->imc))

@@ -2,6 +2,7 @@
 namespace Gvg\Dbe2\classes;
 
 use Exception;
+use Gvg\Dbe2\classes\Abstracts\Pessoa;
 use Gvg\Dbe2\interfaces\IMC;
 
 class Medico extends Pessoa implements IMC{
