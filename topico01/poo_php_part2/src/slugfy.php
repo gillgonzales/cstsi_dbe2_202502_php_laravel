@@ -13,5 +13,10 @@ $list = [$atl1,$atl2,$med1];
 
 var_dump($list);
 
-print_r(array_map(fn($p)=>Str::slug($p->nome),$list));
+print_r(
+    array_map(
+        fn($p)=>Str::slug($p->nome),
+        $list
+    )
+);
 
