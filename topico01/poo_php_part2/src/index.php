@@ -2,10 +2,10 @@
 
 require "../vendor/autoload.php";
 
-// use Gvg\Dbe2\classes\Atleta;
+use Gvg\Dbe2\classes\Atleta;
 
 
-// $atl1 = new Atleta("Luizito Soares",36,1.8,80);
+$atl1 = new Atleta("Luizito Soares",36,1.8,80);
 
 // echo "<hr>";//---
 // echo "<pre>";
@@ -13,6 +13,7 @@ require "../vendor/autoload.php";
 
 // var_dump($atl1);
 
-// require "slugfy.php";
-
-require "exemplo_abstract_class.php";
+// require "exemplo_01_slugfy.php";
+// require "exemplo_02_abstract_class.php";
+// require "exemplo_03_traits.php";
+require "exemplo_04_interface.php";
