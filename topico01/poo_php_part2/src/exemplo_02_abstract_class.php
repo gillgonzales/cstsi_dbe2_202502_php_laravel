@@ -12,8 +12,8 @@ $atl1 = new Atleta("Luizito",36,1.8,80);
 $med1 = new Medico("Pualo Paixão",122343,"Fisioterapeuta");
 
 
-echo "\nAtleta ".(($atl1 instanceof PessoaAbstrata)?"eh":"não eh")." PessoaAbstrata";
-echo "\nMédico ".(($med1 instanceof Pessoa)?"eh":"não eh")."  Pessoa";
+// echo "\nAtleta ".(($atl1 instanceof PessoaAbstrata)?"eh":"não eh")." PessoaAbstrata";
+// echo "\nMédico ".(($med1 instanceof Pessoa)?"eh":"não eh")."  Pessoa";
 
 $relatorio = new Relatorio;
 

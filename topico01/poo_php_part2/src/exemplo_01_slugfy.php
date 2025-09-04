@@ -11,7 +11,7 @@ $med1 = new Medico("Pualo Paixão",122343,"Fisioterapeuta");
 
 $list = [$atl1,$atl2,$med1];
 
-var_dump($list);
+// var_dump($list);
 
 print_r(
     array_map(
