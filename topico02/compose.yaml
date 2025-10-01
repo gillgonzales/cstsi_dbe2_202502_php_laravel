@@ -1,4 +1,4 @@
-name: 'dbe2-laravel202502-test'
+name: 'dbe2-laravel202502-docker'
 services:
     laravel.test:
         build:
