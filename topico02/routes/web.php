@@ -19,3 +19,7 @@ Route::get('ola', [
 ]);
 
 Route::get('greetings', 'App\Http\Controllers\HomeController@welcome');
+
+Route::get('greetings/{name?}', 'App\Http\Controllers\HomeController@welcome');
+
+Route::get('listusers',[HomeController::class,'listUsers']);
