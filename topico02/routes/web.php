@@ -11,3 +11,11 @@ Route::get('/', function () {
 Route::get('ola',function(){
     echo "Hola Mundo !!!";
 });
+
+
+Route::get('ola', [
+    HomeController::class,
+    'index'
+]);
+
+Route::get('greetings', 'App\Http\Controllers\HomeController@welcome');
