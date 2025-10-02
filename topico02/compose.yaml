@@ -1,13 +1,13 @@
-name: 'dbe2-laravel202502-docker'
+name: dbe2-laravel202502-docker
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
                 MYSQL_CLIENT: mariadb-client
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -52,9 +52,9 @@ services:
     phpmyadmin:
         image: 'phpmyadmin/phpmyadmin:latest'
         ports:
-          - '8091:80'
+            - '8091:80'
         environment:
-            PMA_HOST: 'mariadb'
+            PMA_HOST: mariadb
         networks:
             - sail
         depends_on:
