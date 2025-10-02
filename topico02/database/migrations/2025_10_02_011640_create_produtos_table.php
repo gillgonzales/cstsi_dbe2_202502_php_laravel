@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->text('descricao');
+            $table->float('preco');
+            $table->integer('qtd_estoque');
+            $table->boolean('importado')->default(false);
             $table->timestamps();
         });
     }
