@@ -10,6 +10,7 @@
 
 <body>
     <h1>Produtos</h1>
+    <a href="/produto">Criar Novo Produto</a>
     @if ($listProdutos->count() > 0)
         <table>
             <thead>
@@ -19,16 +20,19 @@
                     <th>qtd_estoque</th>
                     <th>preco</th>
                     <th>Importado</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($listProdutos as $produto)
                     <tr>
-                        <td>{{ $produto->id }}</td>
+                        <td>
+                            <a href="{{route('produtos.show', $produto->id) }}">{{ $produto->id }}</a></td>
                         <td>{{ $produto->nome }}</td>
                         <td>{{ $produto->qtd_estoque }}</td>
                         <td>{{ $produto->preco }}</td>
                         <td>{{ $produto->importado ? 'Sim' : 'Não' }}</td>
+                        <td><a href="{{route('produtos.edit',$produto->id)}}">Editar</a></td>
                     </tr>
                 @endforeach
             </tbody>
