@@ -24,5 +24,9 @@ Route::get('greetings/{name?}', 'App\Http\Controllers\HomeController@welcome');
 
 Route::get('listusers',[HomeController::class,'listUsers']);
 
-Route::get('produtos',
-        [ProdutoController::class,'index']);
+
+Route::get('produtos',[ProdutoController::class,'index']);
+Route::get('produtos/{id}',[ProdutoController::class,'show'])->name('produtos.show');
+Route::get('produto',[ProdutoController::class,'create']);
+Route::post('produto',[ProdutoController::class,'store']);
+Route::get('produto/{id}/edit',[ProdutoController::class,'edit'])->name('produtos.edit');
