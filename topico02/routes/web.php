@@ -30,3 +30,4 @@ Route::get('produtos/{id}',[ProdutoController::class,'show'])->name('produtos.sh
 Route::get('produto',[ProdutoController::class,'create']);
 Route::post('produto',[ProdutoController::class,'store']);
 Route::get('produto/{id}/edit',[ProdutoController::class,'edit'])->name('produtos.edit');
+Route::post('produto/{id}/edit',[ProdutoController::class,'update'])->name('produtos.update');
