@@ -29,30 +29,47 @@ class ProdutoController extends Controller
     public function store(Request $request){
         // dd($request->all());
         $novoProduto = $request->all();
+        // dd($novoProduto);
         $novoProduto['importado'] = $request->has('importado');
+        // dd($novoProduto);
         if(Produto::create($novoProduto))
             return redirect('/produtos');
-        else dd("Erro ao inserir produto!!!");
+
+        dd("Erro ao inserir produto!!!");
     }
 
     public function edit($id){
         $produto = Produto::find($id);
+
         if($produto)
-            return view('produtos.edit',compact('produto'));
-        else dd("Produto não encontrado!!!");
+            return view('produtos.edit', compact('produto'));
+
+        dd("Produto não encontrado!!!");
     }
 
 
     public function update(Request $request, $id){
 
+        $updatedProduto = $request->all();
+
+        $updatedProduto['importado'] = $request->has('importado');
+
+        $produtoAtual = Produto::find($id);
+        if($produtoAtual){
+            if($produtoAtual->update($updatedProduto)){
+                return redirect('/produtos');
+            }
+        }
+        dd("Erro ao atualizar o produto!!!");
     }
 
     public function delete($id){
-
+        //formulário de confirmação
 
     }
 
     public function remove($id){
-
+        //realmente realiza a remoção no banco
+        //User o método destroy do Eloquent (Model)
     }
 }
