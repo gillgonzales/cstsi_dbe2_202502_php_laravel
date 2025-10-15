@@ -12,6 +12,8 @@
     <h1>Insert new Produto</h1>
     <form action="{{route('produtos.update',$produto->id)}}" method="POST">
         @csrf
+        {{--Somente para o uso de resource--}}
+        {{-- @method('PUT') --}}
         <table>
             <tr>
                 <td>Nome:</td>
