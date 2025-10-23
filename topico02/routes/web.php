@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
@@ -100,3 +101,9 @@ Route::get('login',function(){
     echo "<h1>O middleware AUTH redireciona para a rota login se não encontrar uma sessão ativa!!!<h1>";
     echo "<p>Trabalharemos com middleware de autenticação na API</p>";
 })->name('login');//O laravel internamente prefere usar os nomes
+
+
+// O controldor deve ser um recurso, seguindo os padrões de nomes dos métodos
+Route::resource('fornecedores',FornecedorController::class)->parameters([
+    "fornecedores"=>"fornecedor"
+]);
