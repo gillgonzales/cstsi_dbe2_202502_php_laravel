@@ -110,3 +110,20 @@ Route::resource('fornecedores',FornecedorController::class)->parameters([
 
 
 Route::resource('produtos',ProdutoController::class);
+// Rotas  index e show não foram sobreescritas
+
+//Todas as outras rotas agora exigem autenticação
+Route::controller(ProdutoController::class)->group(function(){
+    Route::prefix('produtos')->group(function(){
+        //Adicionamos a rota para o form de confirmação usando Route Model Bind
+        Route::middleware('auth')->group(function () {//Protegidas por autenticação
+        // Rotas agrupadas pelo prefixo "produto"
+            Route::get('/create',  'create')->name("produtos.create");
+            Route::post('/', 'store')->name("produtos.store");
+            Route::get('/{produto}/edit',  'edit')->name("produtos.edit");
+            Route::put('/{produto}/update', 'update')->name("produtos.update");
+            Route::get('/{produto}/delete', 'delete')->name("produtos.delete");
+            Route::delete('/{produto}/destroy', 'destroy')->name("produtos.destroy");
+        });
+    });
+});
