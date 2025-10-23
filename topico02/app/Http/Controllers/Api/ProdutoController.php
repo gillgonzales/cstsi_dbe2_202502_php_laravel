@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProdutoCollection;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        //retornamos uma coleção de modelos de Produto no formato JSON com a classe
+        //Resource Collection de Produto.
+        return new ProdutoCollection(Produto::all());
     }
 
     /**
