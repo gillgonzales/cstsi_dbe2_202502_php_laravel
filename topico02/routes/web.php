@@ -73,27 +73,27 @@ Route::get('listusers', [HomeController::class, 'listUsers']);
 // });
 
 //Combinação de vários agrupamentos Controller e Prefixo
-Route::controller(ProdutoController::class)->group(function () {
-    // Rotas agrupadas pelo prefixo "produtos"
-    Route::prefix('/produtos')->group(function () {
-        Route::get('/', 'index')->name("produtos.index");
-        Route::get('/{id}', 'show')->name("produtos.show");
-    });
+// Route::controller(ProdutoController::class)->group(function () {
+//     // Rotas agrupadas pelo prefixo "produtos"
+//     Route::prefix('/produtos')->group(function () {
+//         Route::get('/', 'index')->name("produtos.index");
+//         Route::get('/{id}', 'show')->name("produtos.show");
+//     });
 
-    //rota->middleware->controller
-    //Agrupamento por middlewares
-    Route::middleware('auth')->group(function () {//Protegidas por autenticação
-        // Rotas agrupadas pelo prefixo "produto"
-        Route::prefix('/produto')->group(function () {
-            Route::get('/',  'create')->name("produto.create");
-            Route::post('/', 'store')->name("produto.store");
-            Route::get('/{id}/edit',  'edit')->name("produto.edit");
-            Route::put('/{id}/update', 'update')->name("produto.update");
-            Route::get('/{id}/delete', 'delete')->name("produto.delete");
-            Route::delete('/{id}/destroy', 'remove')->name("produto.destroy");
-        });
-    });
-});
+//     //rota->middleware->controller
+//     //Agrupamento por middlewares
+//     Route::middleware('auth')->group(function () {//Protegidas por autenticação
+//         // Rotas agrupadas pelo prefixo "produto"
+//         Route::prefix('/produto')->group(function () {
+//             Route::get('/',  'create')->name("produto.create");
+//             Route::post('/', 'store')->name("produto.store");
+//             Route::get('/{id}/edit',  'edit')->name("produto.edit");
+//             Route::put('/{id}/update', 'update')->name("produto.update");
+//             Route::get('/{id}/delete', 'delete')->name("produto.delete");
+//             Route::delete('/{id}/destroy', 'remove')->name("produto.destroy");
+//         });
+//     });
+// });
 
 
 //Exemplo para testar o middleware padrão Auth do laravel
@@ -107,3 +107,6 @@ Route::get('login',function(){
 Route::resource('fornecedores',FornecedorController::class)->parameters([
     "fornecedores"=>"fornecedor"
 ]);
+
+
+Route::resource('produtos',ProdutoController::class);
