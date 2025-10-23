@@ -109,21 +109,33 @@ Route::resource('fornecedores',FornecedorController::class)->parameters([
 ]);
 
 
-Route::resource('produtos',ProdutoController::class);
-// Rotas  index e show não foram sobreescritas
+// Route::resource('produtos',ProdutoController::class);
+// // Rotas  index e show não foram sobreescritas
 
-//Todas as outras rotas agora exigem autenticação
-Route::controller(ProdutoController::class)->group(function(){
-    Route::prefix('produtos')->group(function(){
-        //Adicionamos a rota para o form de confirmação usando Route Model Bind
-        Route::middleware('auth')->group(function () {//Protegidas por autenticação
-        // Rotas agrupadas pelo prefixo "produto"
-            Route::get('/create',  'create')->name("produtos.create");
-            Route::post('/', 'store')->name("produtos.store");
-            Route::get('/{produto}/edit',  'edit')->name("produtos.edit");
-            Route::put('/{produto}/update', 'update')->name("produtos.update");
-            Route::get('/{produto}/delete', 'delete')->name("produtos.delete");
-            Route::delete('/{produto}/destroy', 'destroy')->name("produtos.destroy");
-        });
-    });
-});
+// //Todas as outras rotas agora exigem autenticação
+// Route::controller(ProdutoController::class)->group(function(){
+//     Route::prefix('produtos')->group(function(){
+//         //Adicionamos a rota para o form de confirmação usando Route Model Bind
+//         Route::middleware('auth')->group(function () {//Protegidas por autenticação
+//         // Rotas agrupadas pelo prefixo "produto"
+//             Route::get('/create',  'create')->name("produtos.create");
+//             Route::post('/', 'store')->name("produtos.store");
+//             Route::get('/{produto}/edit',  'edit')->name("produtos.edit");
+//             Route::put('/{produto}/update', 'update')->name("produtos.update");
+//             Route::get('/{produto}/delete', 'delete')->name("produtos.delete");
+//             Route::delete('/{produto}/destroy', 'destroy')->name("produtos.destroy");
+//         });
+//     });
+// });
+
+
+//Outra forma de aplicar os middlewares diretamente no resource
+//Restringimos o acesso a todas as rotas
+Route::middleware('auth')->group(function () {
+    Route::resource('produtos',ProdutoController::class)->except(['index','show']);
+});//Restringimos todas as rotas exceto index e show
+
+//A rota produtos/create estava sendo interpretada como show
+//por isso a rota de show deve ser definida depois da produtos/create
+//Criamos apenas as rotas de index e show com acesso público
+Route::resource('produtos',ProdutoController::class)->only(['index','show']);
