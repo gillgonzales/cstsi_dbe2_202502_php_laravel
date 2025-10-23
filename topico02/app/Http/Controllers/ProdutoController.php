@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -64,12 +65,23 @@ class ProdutoController extends Controller
     }
 
     public function delete($id){
-        //formulário de confirmação
+       $produto = Produto::find($id);
+
+        if($produto)
+            return view('produtos.delete', compact('produto'));
+
+        dd("Produto não encontrado!!!");
 
     }
 
     public function remove($id){
         //realmente realiza a remoção no banco
         //User o método destroy do Eloquent (Model)
+        try{
+          Produto::destroy($id);
+          return redirect('/produtos');
+        }catch(Exception $error){
+            dd($error);
+        }
     }
 }
