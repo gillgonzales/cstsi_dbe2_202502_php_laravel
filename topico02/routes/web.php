@@ -79,13 +79,18 @@ Route::controller(ProdutoController::class)->group(function () {
         Route::get('/{id}', 'show')->name("produtos.show");
     });
 
-    // Rotas agrupadas pelo prefixo "produto"
-    Route::prefix('/produto')->group(function () {
-        Route::get('/',  'create')->name("produto.create");
-        Route::post('/', 'store')->name("produto.store");
-        Route::get('/{id}/edit',  'edit')->name("produto.edit");
-        Route::put('/{id}/update', 'update')->name("produto.update");
-        Route::get('/{id}/delete', 'delete')->name("produto.delete");
-        Route::delete('/{id}/destroy', 'remove')->name("produto.destroy");
+    //rota->middleware->controller
+    //Agrupamento por middlewares
+    Route::middleware('auth')->group(function () {//Protegidas por autenticação
+        // Rotas agrupadas pelo prefixo "produto"
+        Route::prefix('/produto')->group(function () {
+            Route::get('/',  'create')->name("produto.create");
+            Route::post('/', 'store')->name("produto.store");
+            Route::get('/{id}/edit',  'edit')->name("produto.edit");
+            Route::put('/{id}/update', 'update')->name("produto.update");
+            Route::get('/{id}/delete', 'delete')->name("produto.delete");
+            Route::delete('/{id}/destroy', 'remove')->name("produto.destroy");
+        });
     });
 });
+
