@@ -16,8 +16,10 @@
             <li>Preço: {{ $produto->preco }}</li>
             <li>Importado: {{ $produto->importado ? 'Sim' : 'Não' }}</li>
         </ul>
-        <a href="{{route('produto.edit',$produto->id)}}">Editar</a>
-        | <a href="{{route('produto.delete',$produto->id)}}">Remover</a>
+        @auth
+        <a href="{{route('produtos.edit',$produto->id)}}">Editar</a>
+        | <a href="{{route('produtos.delete',$produto->id)}}">Remover</a>
+        @endauth
     @else
         <p>Produto não encontrado! </p>
     @endif

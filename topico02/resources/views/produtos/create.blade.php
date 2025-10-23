@@ -10,7 +10,7 @@
 
 <body>
     <h1>Insert new Produto</h1>
-    <form action="/produto" method="POST">
+    <form action="{{route('produtos.store')}}" method="POST">
         @csrf
         {{-- <  input type="hidden" name="_token" value="{{csrf_token()}}"/> --}}
         <table>

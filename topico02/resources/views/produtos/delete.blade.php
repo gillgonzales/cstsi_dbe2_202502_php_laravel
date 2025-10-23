@@ -17,7 +17,7 @@
             <li>Preço: {{ $produto->preco }}</li>
             <li>Importado: {{ $produto->importado ? 'Sim' : 'Não' }}</li>
         </ul>
-        <form id='delete' action="{{route('produto.destroy',$produto->id)}}" method="POST">
+        <form id='delete' action="{{route('produtos.destroy',$produto->id)}}" method="POST">
             @method('delete')
             @csrf
         </form>
