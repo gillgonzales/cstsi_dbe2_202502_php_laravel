@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProdutoCollection;
+use App\Http\Resources\ProdutoResource;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 
@@ -29,10 +30,13 @@ class ProdutoController extends Controller
 
     /**
      * Display the specified resource.
+     * Pelo Route Model Binding, quando não encontra retorna a página 404
      */
     public function show(Produto $produto)
     {
-        //
+        //A classe ProdutoResouce é para um único objeto no formato JSON
+        // recebe o objeto do modelo para retornar como JSON
+        return new ProdutoResource($produto);
     }
 
     /**
