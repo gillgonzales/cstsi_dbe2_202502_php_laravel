@@ -94,3 +94,9 @@ Route::controller(ProdutoController::class)->group(function () {
     });
 });
 
+
+//Exemplo para testar o middleware padrão Auth do laravel
+Route::get('login',function(){
+    echo "<h1>O middleware AUTH redireciona para a rota login se não encontrar uma sessão ativa!!!<h1>";
+    echo "<p>Trabalharemos com middleware de autenticação na API</p>";
+})->name('login');//O laravel internamente prefere usar os nomes
