@@ -60,13 +60,32 @@ Route::get('listusers', [HomeController::class, 'listUsers']);
 // });
 
 //Rotas por controlador
-Route::controller(ProdutoController::class)->group(function(){
-    Route::get('/produtos','index')->name("produtos.index");
-    Route::get('/produtos/{id}','show')->name("produtos.show");
-    Route::get('/produto','create')->name("produto.create");
-    Route::post('/produto','store')->name("produto.store");
-    Route::get('/produto/{id}/edit','edit')->name("produto.edit");
-    Route::put('/produto/{id}/update','update')->name("produto.update");
-    Route::get('/produto/{id}/delete','delete')->name("produto.delete");
-    Route::delete('/produto/{id}/destroy','remove')->name("produto.destroy");
+// Route::controller(ProdutoController::class)->group(function(){
+//     Route::get('/produtos','index')->name("produtos.index");
+//     Route::get('/produtos/{id}','show')->name("produtos.show");
+//     Route::get('/produto','create')->name("produto.create");
+//     Route::post('/produto','store')->name("produto.store");
+//     Route::get('/produto/{id}/edit','edit')->name("produto.edit");
+//     Route::put('/produto/{id}/update','update')->name("produto.update");
+//     Route::get('/produto/{id}/delete','delete')->name("produto.delete");
+//     Route::delete('/produto/{id}/destroy','remove')->name("produto.destroy");
+// });
+
+//Combinação de vários agrupamentos Controller e Prefixo
+Route::controller(ProdutoController::class)->group(function () {
+    // Rotas agrupadas pelo prefixo "produtos"
+    Route::prefix('/produtos')->group(function () {
+        Route::get('/', 'index')->name("produtos.index");
+        Route::get('/{id}', 'show')->name("produtos.show");
+    });
+
+    // Rotas agrupadas pelo prefixo "produto"
+    Route::prefix('/produto')->group(function () {
+        Route::get('/',  'create')->name("produto.create");
+        Route::post('/', 'store')->name("produto.store");
+        Route::get('/{id}/edit',  'edit')->name("produto.edit");
+        Route::put('/{id}/update', 'update')->name("produto.update");
+        Route::get('/{id}/delete', 'delete')->name("produto.delete");
+        Route::delete('/{id}/destroy', 'remove')->name("produto.destroy");
+    });
 });
