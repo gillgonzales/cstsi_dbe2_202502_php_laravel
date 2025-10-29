@@ -131,11 +131,18 @@ Route::resource('fornecedores',FornecedorController::class)->parameters([
 
 //Outra forma de aplicar os middlewares diretamente no resource
 //Restringimos o acesso a todas as rotas
-Route::middleware('auth')->group(function () {
-    Route::resource('produtos',ProdutoController::class)->except(['index','show']);
-});//Restringimos todas as rotas exceto index e show
+// Route::middleware('auth')->group(function () {
+//         Route::resource('produtos',ProdutoController::class)->except(['index','show']);
+//         Route::resource('fornecedores',FornecedorController::class)
+//             ->parameters([
+//                 "fornecedores"=>"fornecedor"
+//             ])->except(['index','show']);
+// });//Restringimos todas as rotas exceto index e show
+
+Route::resource('produtos',ProdutoController::class)->except(['index','show'])->middleware('auth');
 
 //A rota produtos/create estava sendo interpretada como show
 //por isso a rota de show deve ser definida depois da produtos/create
 //Criamos apenas as rotas de index e show com acesso público
 Route::resource('produtos',ProdutoController::class)->only(['index','show']);
+
