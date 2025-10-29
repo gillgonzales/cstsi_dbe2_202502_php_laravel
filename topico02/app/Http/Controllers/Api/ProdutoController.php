@@ -39,15 +39,18 @@ class ProdutoController extends Controller
             $produto['importado'] = $request->has('importado');
             Produto::create($produto);
             return response()->json(["message" => 'Produto Criado!'], 201);
-        } catch (Exception $error) {
-            // throw $error; //Repassa a exceção para o laravel tratar e gerar a resposta
+        }catch(ValidationException $error ){
+            throw $error;
+        }catch (Exception $error) {
             $httpStatus = 500;
-            if($error instanceof ValidationException){
-                    // $httpStatus = 422;
-                    throw $error;
-            }
             $error_message = ["erro" => "Erro ao criar o produto!"];
-            if(env('APP_DEBUG')) $error_message["exception"]=$error->getMessage();
+            if(env('APP_DEBUG'))
+                $error_message = [
+                            ...$error_message,
+                            "message"=>$error->getMessage(),
+                            "exception"=>$error,
+                            "trace"=>$error->getTrace()
+                ];
             return response()->json($error_message, $httpStatus);
         }
     }
