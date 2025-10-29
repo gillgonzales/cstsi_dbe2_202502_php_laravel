@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProdutoCollection;
 use App\Http\Resources\ProdutoResource;
 use App\Models\Produto;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ProdutoController extends Controller
 {
@@ -25,13 +27,28 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $produto = $request->all();
-        $produto['importado'] = $request->has('importado');
-
-        if (Produto::create($produto)) {
-            return response()->json(["message"=>'Produto Criado!'], 201);
-        } else {
-            return response()->json(["message"=>"Erro ao criar o produto!"], 500);
+        try {
+            $request->validate([
+                "nome" =>        "required | string",
+                "preco" =>       ["required", "numeric", "min:1.99"],
+                "qtd_estoque" => "required | integer | min:2",
+                "descricao" =>  ["required", 'string', "max:500"],
+                "importado" =>   "nullable | boolean"
+            ]);
+            $produto = $request->all();
+            $produto['importado'] = $request->has('importado');
+            Produto::create($produto);
+            return response()->json(["message" => 'Produto Criado!'], 201);
+        } catch (Exception $error) {
+            // throw $error; //Repassa a exceção para o laravel tratar e gerar a resposta
+            $httpStatus = 500;
+            if($error instanceof ValidationException){
+                    // $httpStatus = 422;
+                    throw $error;
+            }
+            $error_message = ["erro" => "Erro ao criar o produto!"];
+            if(env('APP_DEBUG')) $error_message["exception"]=$error->getMessage();
+            return response()->json($error_message, $httpStatus);
         }
     }
 
