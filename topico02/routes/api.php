@@ -9,4 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 //Rotas da api para o endpoint produtos com apiResource
-Route::apiResource('produto',ProdutoController::class);
+
+Route::prefix('v1')->group(function () {
+    Route::apiResource('produtos', ProdutoController::class);
+});
