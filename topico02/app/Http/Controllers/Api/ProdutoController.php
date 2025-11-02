@@ -33,8 +33,12 @@ class ProdutoController extends Controller
         try {
             return new ProdutoStoredResource(Produto::create($request->validated()));
         }catch (Exception $error) {
-        //    return $this->errorHandler("Erro ao criar o protudo!!!",$error,500);
-            throw new ExceptionJsonResponse("Erro ao criar o protudo!!!", previous: $error);
+           return $this->errorHandler("Erro ao criar o protudo!!!",$error,500);
+            // throw new ExceptionJsonResponse(
+            //     message:"Erro ao criar o protudo!!!",
+            //     previous: $error,
+            //     statusCodeMsg:"Erro no cadastro!"
+            // );
         }
     }
 
