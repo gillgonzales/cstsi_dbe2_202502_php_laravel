@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -21,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
         // $exceptions->render(function (ValidationException $error,Request $request){
         //     // return $error->render($request);
         //     return response()->json(["error"=>"validation error!"],400);
+        // });
+
+        // $exceptions->report(function (ValidationException $error){
+        //     //  Log::info("Exceção de validação!!");
+        //     //  Log::channel('stderr')->info("Exceção de validação!!");
+        //     return true;
         // });
 
     })->create();
