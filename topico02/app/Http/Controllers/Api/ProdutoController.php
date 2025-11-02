@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ExceptionJsonResponse;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\ProdutoStoreRequest;
 use App\Http\Resources\ProdutoCollection;
@@ -32,7 +33,8 @@ class ProdutoController extends Controller
         try {
             return new ProdutoStoredResource(Produto::create($request->validated()));
         }catch (Exception $error) {
-           return $this->errorHandler("Erro ao criar o protudo!!!",$error,500);
+        //    return $this->errorHandler("Erro ao criar o protudo!!!",$error,500);
+            throw new ExceptionJsonResponse("Erro ao criar o protudo!!!", previous: $error);
         }
     }
 
