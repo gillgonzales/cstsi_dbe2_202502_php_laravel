@@ -17,6 +17,6 @@ class Controller
         string | null $statusCodeMsg = null
         ): JsonResponse
     {
-      throw new ExceptionJsonResponse($message,$httpStatus,$exception);
+      throw new ExceptionJsonResponse($message,$httpStatus,$exception,$statusCodeMsg);
     }
 }
