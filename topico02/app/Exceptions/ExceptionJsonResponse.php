@@ -10,8 +10,16 @@ use Illuminate\Support\Facades\Log;
 class ExceptionJsonResponse extends Exception
 {
 
-    private string $statusCodeMsg = 'Erro no Servidor!';
     private int $httpStatus = 500;
+
+    public function __construct(
+        string $message,
+        int $code = 500,
+        Exception | null $previous = null,
+        private string | null $statusCodeMsg = 'Erro no Servidor!'
+        ){
+            parent::__construct($message,$code,$previous);
+    }
 
     /**
      * Render the exception as an HTTP response.
@@ -35,7 +43,8 @@ class ExceptionJsonResponse extends Exception
     }
 
     public function report():void {
-        Log::info("Exceção Json Response!!");
-        Log::channel('stderr')->info("Exceção Json Response!!");
+        report($this->getPrevious());
+        Log::error("Lançanda a Exceção ExcepetionJsonResponse!!");
+        Log::channel('stderr')->error("Lançanda a Exceção ExcepetionJsonResponse!!");
     }
 }
