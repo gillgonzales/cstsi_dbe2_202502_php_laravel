@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\ExceptionJsonResponse;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\ProdutoStoreRequest;
+use App\Http\Requests\ProdutoUpdateRequest;
 use App\Http\Resources\ProdutoCollection;
 use App\Http\Resources\ProdutoResource;
 use App\Http\Resources\ProdutoStoredResource;
+use App\Http\Resources\ProdutoUpdatedResource;
 use App\Models\Produto;
 use Exception;
 use Illuminate\Http\Request;
@@ -32,8 +34,8 @@ class ProdutoController extends Controller
     {
         try {
             return new ProdutoStoredResource(Produto::create($request->validated()));
-        }catch (Exception $error) {
-           return $this->errorHandler("Erro ao criar o protudo!!!",$error,500);
+        } catch (Exception $error) {
+            return $this->errorHandler("Erro ao criar o protudo!!!", $error, 500);
             // throw new ExceptionJsonResponse(
             //     message:"Erro ao criar o protudo!!!",
             //     previous: $error,
@@ -56,9 +58,14 @@ class ProdutoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produto $produto)
+    public function update(ProdutoUpdateRequest $request, Produto $produto)
     {
-        //
+        try {
+            $produto->update($request->validated());
+            return new ProdutoUpdatedResource($produto);
+        } catch (Exception $error) {
+            return $this->errorHandler("Erro ao atualizar o protudo!!!", $error, 500);
+        }
     }
 
     /**
@@ -66,6 +73,12 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        //
+        try {
+            $produto->delete();
+            return new ProdutoResource($produto)
+            ->additional(["message"=>"Produto removido com sucesso!!!"]);
+        } catch (Exception $error) {
+            return $this->errorHandler("Erro ao remover o protudo!!!", $error, 500);
+        }
     }
 }
