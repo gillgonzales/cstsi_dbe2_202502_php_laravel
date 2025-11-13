@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginStatefulController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
@@ -146,3 +147,6 @@ Route::resource('produtos',ProdutoController::class)->except(['index','show'])->
 //Criamos apenas as rotas de index e show com acesso público
 Route::resource('produtos',ProdutoController::class)->only(['index','show']);
 
+// Route::post('login',[LoginStatefulController::class, 'login']);
+
+// Route::post('logout',[LoginStatefulController::class, 'logout'])->middleware('auth:sanctum');
