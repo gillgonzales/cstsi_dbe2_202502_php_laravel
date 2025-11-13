@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,7 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        dd($middleware->getMiddlewareGroups());
+
+        $middleware->api(prepend: ForceJsonResponse::class);
+        $middleware->statefulApi();//Obriga o uso de CSRF inclusive para Tokens
+        // dd($middleware->getMiddlewareGroups());
+        $middleware->alias([
+            'ability'=>CheckForAnyAbility::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
