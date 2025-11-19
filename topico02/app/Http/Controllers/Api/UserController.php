@@ -52,7 +52,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        //Somente usuários alteram o próprio perfil
+        //$request->user() tem que ser o mesmo $user
     }
 
     /**
@@ -60,6 +61,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        //Mesma regra do Update, mas deve permitir também o Admin
     }
 }
