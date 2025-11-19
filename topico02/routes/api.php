@@ -18,12 +18,16 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('produtos', ProdutoController::class)
-            ->only(['store', 'update', 'delete']);
+            ->only(['store','update']);
 
-        Route::apiResource('users', UserController::class)->only(['index']);
+        Route::apiResource('produtos', ProdutoController::class)
+            ->only(['delete'])
+            ->middleware('ability:is-admin');//Apenas o Admin remove produtos da base
+
+        Route::apiResource('users', UserController::class)->except(['index']);
         Route::apiResource('users', UserController::class)
-            ->only(['show'])
-            ->middleware('ability:is-admin');
+            ->only(['index'])
+            ->middleware('ability:is-admin');//Apenas Admin lista usuários
     });
 
     Route::apiResource('users', UserController::class)
