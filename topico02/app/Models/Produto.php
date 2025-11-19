@@ -10,6 +10,10 @@ class Produto extends Model
 
     use HasFactory;
 
+    // protected $tablem = 'products';
+
+    // protected $primaryKey = 'id_prod';
+
     protected $fillable = [
         'nome',
         'descricao',
