@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             // $table->id('id_prod');
             $table->id();
+             $table->foreignId('fornecedor_id')
+                    ->references('id')->on('fornecedores')
+                    ->cascadeOnDelete();
             $table->string('nome');
             $table->text('descricao');
             $table->float('preco');
