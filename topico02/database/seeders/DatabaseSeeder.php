@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Fornecedor;
 use App\Models\Produto;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,17 +22,17 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::factory()->create([
-            'name'=>'Admin',
-            'email'=>'admin@dev.test',
-            'is_admin'=>true,
-            // 'password'=>'789456123'
-            'password'=>env('ADMIN_PASSWORD','adminadmin')
+        // Produto::factory(20)->create();
+
+        $this->call([
+            UserAdminSeeder::class,
+            RegiaoSeeder::class,
+            EstadoSeeder::class
         ]);
 
-        Produto::factory(20)->create();
-
-        $this->call(RegiaoSeeder::class);
-
+        Fornecedor::factory(100)
+            // ->has(Produto::factory(10))
+            ->hasProdutos(100)
+            ->create();
     }
 }
