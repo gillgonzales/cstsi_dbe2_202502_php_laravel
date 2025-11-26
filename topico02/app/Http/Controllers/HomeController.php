@@ -22,5 +22,6 @@ class HomeController extends Controller
     public function listUsers(){
         $listUsers = User::all();
         // dd($listUsers);
+        return view('users.list',['listaDeUsuarios'=>$listUsers]);
     }
 }
