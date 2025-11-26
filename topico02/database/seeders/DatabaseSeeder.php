@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
             EstadoSeeder::class
         ]);
 
-        Fornecedor::factory(100)
+        Fornecedor::factory(500)
             // ->has(Produto::factory(10))
-            ->hasProdutos(100)
+            ->hasProdutos(10)
             ->create();
     }
 }
