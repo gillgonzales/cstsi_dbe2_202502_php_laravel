@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 class Produto extends Model
 {
@@ -23,11 +27,13 @@ class Produto extends Model
         'fornecedor_id'
     ];
 
-    public function fornecedor(){
+    public function fornecedor(): BelongsTo
+    {
         return $this->belongsTo(Fornecedor::class);
     }
 
-    public function regiao(){
+    public function regiao(): BelongsToThrough
+    {
         return $this->belongsToThrough(
             Regiao::class,
             [
@@ -35,15 +41,20 @@ class Produto extends Model
                 Fornecedor::class
             ],
             foreignKeyLookup: [
-                Regiao::class=>'regiao_id',
-                Fornecedor::class=>'fornecedor_id'
+                Regiao::class => 'regiao_id',
+                Fornecedor::class => 'fornecedor_id'
             ]
         );
     }
 
-    public function promocoes()
+    public function promocoes():BelongsToMany
     {
         return $this->belongsToMany(Promocao::class)
-                ->withPivot('desconto');
+            ->withPivot('desconto');
+    }
+
+    public function media(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'model');
     }
 }
