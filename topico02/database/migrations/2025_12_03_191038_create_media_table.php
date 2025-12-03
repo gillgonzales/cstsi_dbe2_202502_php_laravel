@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('model_id');
+            $table->string('model_type');
+            $table->string('type')->default('image'); //video
+            $table->string('source');
             $table->timestamps();
         });
     }

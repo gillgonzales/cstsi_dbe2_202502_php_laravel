@@ -16,8 +16,12 @@ class MediaFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
+       return [
+            "source" =>str_replace(
+                'via.placeholder.com',
+                'dummyimage.com',
+                fake()->imageUrl(360, 360,'',true)
+            )
         ];
     }
 }
