@@ -11,6 +11,7 @@ use App\Http\Resources\ProdutoResource;
 use App\Http\Resources\ProdutoStoredResource;
 use App\Http\Resources\ProdutoUpdatedResource;
 use App\Models\Produto;
+use App\Repositories\ProdutoRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -32,15 +33,11 @@ class ProdutoController extends Controller
      */
     public function store(ProdutoStoreRequest $request)
     {
-        try {
-            return new ProdutoStoredResource(Produto::create($request->validated()));
+         try {
+            $novoProduto = ProdutoRepository::store($request->validated());
+            return new ProdutoStoredResource($novoProduto);
         } catch (Exception $error) {
-            return $this->errorHandler("Erro ao criar o protudo!!!", $error, 500);
-            // throw new ExceptionJsonResponse(
-            //     message:"Erro ao criar o protudo!!!",
-            //     previous: $error,
-            //     statusCodeMsg:"Erro no cadastro!"
-            // );
+            $this->errorHandler("Erro ao criar Produto!!",$error);
         }
     }
 
@@ -52,7 +49,7 @@ class ProdutoController extends Controller
     {
         //A classe ProdutoResouce é para um único objeto no formato JSON
         // recebe o objeto do modelo para retornar como JSON
-        return new ProdutoResource($produto);
+        return new ProdutoResource($produto->load('media'));
     }
 
     /**
