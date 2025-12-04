@@ -49,7 +49,7 @@ class ProdutoController extends Controller
     {
         //A classe ProdutoResouce é para um único objeto no formato JSON
         // recebe o objeto do modelo para retornar como JSON
-        return new ProdutoResource($produto->load('media'));
+        return new ProdutoResource($produto->load(['fornecedor.estado','media','promocoes']));
     }
 
     /**
