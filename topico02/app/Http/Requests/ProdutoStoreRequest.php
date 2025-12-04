@@ -26,7 +26,10 @@ class ProdutoStoreRequest extends FormRequest
                 "preco" =>       ["required", "numeric", "min:1.99"],
                 "qtd_estoque" => "required | integer | min:2",
                 "descricao" =>  ["required", 'string', "max:500"],
-                "importado" =>   "nullable | boolean"
+                "importado" =>   "nullable | boolean",
+                "imagem" => "nullable | image",
+                "video" => "nullable | url",
+                "fornecedor_id" => "required | integer"
             ];
     }
 
