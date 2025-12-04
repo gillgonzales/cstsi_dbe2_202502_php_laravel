@@ -31,7 +31,7 @@ class ProdutoRepository
 
                 if (isset($produtoData['video'])) {
                     $novoProduto->media()->create([
-                        'source' => $produtoData['videos']
+                        'source' => $produtoData['video']
                     ]);
                 }
                 $novoProduto->load('media');
