@@ -11,16 +11,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    Route::get('/user', function (Request $request) {
-        $user = $request->user();
-        $user->currentAccessToken()->delete();
-        $token = $user->createToken($user->email)->plainTextToken;
-        return compact(['user','token']);
-    })->middleware('auth:sanctum');
-
-
+    //Rotas Públicas
     Route::apiResource('produtos', ProdutoController::class);
 
+    Route::apiResource('users', UserController::class)->only(['store']);
+
+    Route::middleware('web')->post('login', [LoginStatefulController::class, 'login']);
+
+    Route::prefix('token')->group(function () {
+        Route::post('login', [LoginTokensController::class, 'login']);
+    });
+
+    //Rotas privadas (sanctum)
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('produtos', ProdutoController::class)
             ->only(['store', 'update']);
@@ -30,23 +32,19 @@ Route::prefix('v1')->group(function () {
             ->middleware('ability:is-admin'); //Apenas o Admin remove produtos da base
 
         Route::apiResource('users', UserController::class)->except(['index']);
+
         Route::apiResource('users', UserController::class)
             ->only(['index'])
             ->middleware('ability:is-admin'); //Apenas Admin lista usuários
+
+
+        Route::prefix('token')
+            ->controller(LoginTokensController::class)
+            ->group(function () {
+                Route::post('refresh', 'refresh');
+                Route::post('logout', 'logout');
+            });
+
+        Route::middleware('web')->post('logout', [LoginStatefulController::class, 'logout']);
     });
-
-    Route::apiResource('users', UserController::class)
-        ->except(['index', 'show']);
-
-
-    Route::middleware('web')->group(function () {
-        Route::post('login', [LoginStatefulController::class, 'login']);
-        Route::post('logout', [LoginStatefulController::class, 'logout'])->middleware('auth:sanctum');
-    });
-
-    Route::prefix('token')
-        ->controller(LoginTokensController::class)
-        ->group(function () {
-            Route::post('login', 'login');
-        });
 });

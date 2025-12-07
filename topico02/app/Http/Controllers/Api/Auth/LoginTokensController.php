@@ -15,9 +15,9 @@ class LoginTokensController extends LoginController
             $credentials = $request->validated();
             $user = $this->authenticate($credentials);
             if (!$user) throw new Exception("Dados inválidos!");
-            $ability = $user->is_admin?['is-admin']:[];
-            $token = $user->createToken($user->email,$ability)->plainTextToken;
-            return response()->json(compact('token','user'));
+            $ability = $user->is_admin ? ['is-admin'] : [];
+            $token = $user->createToken($user->email, $ability)->plainTextToken;
+            return response()->json(compact('token', 'user'));
         } catch (Exception $error) {
             return $this->errorHandler(
                 $error->getMessage(),
@@ -25,5 +25,20 @@ class LoginTokensController extends LoginController
                 401
             );
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+        return response()->json(['Usuário desconectado!'], 200);
+    }
+
+    public function refresh(Request $request)
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+        $token = $user->createToken($user->email)->plainTextToken;
+        return compact(['user', 'token']);
     }
 }
