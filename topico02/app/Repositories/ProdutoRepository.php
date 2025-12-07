@@ -17,29 +17,31 @@ class ProdutoRepository
 
             $novoProduto = Produto::make($produtoData);
 
-            DB::transaction(function () use ($produtoData, $novoProduto) {
-                $novoProduto->save();
-                if (isset($produtoData['imagem'])) {
-                    $produtoData['imagem'] = ProdutoUploadService::handleUploadFile($produtoData['imagem']);
-                    if (!$produtoData['imagem'])
-                        throw new Exception("Erro ao salvar produto com imagem!!");
+            DB::beginTransaction();
+            $novoProduto->save();
+            if (isset($produtoData['imagem'])) {
+                $produtoData['imagem'] = ProdutoUploadService::handleUploadFile($produtoData['imagem']);
+                if (!$produtoData['imagem'])
+                    throw new Exception("Erro ao salvar produto com imagem!!");
 
-                     $novoProduto->media()->create([
-                        'source' => $produtoData['imagem']
-                    ]);
-                }
+                $novoProduto->media()->create([
+                    'source' => $produtoData['imagem']
+                ]);
+            }
 
-                if (isset($produtoData['video'])) {
-                    $novoProduto->media()->create([
-                        'source' => $produtoData['video']
-                    ]);
-                }
-                $novoProduto->load('media');
-                $novoProduto->refresh();
-            });
+            if (isset($produtoData['video'])) {
+                $novoProduto->media()->create([
+                    'source' => $produtoData['video']
+                ]);
+            }
+            $novoProduto->load('media');
+            $novoProduto->refresh();
             return $novoProduto;
         } catch (Exception $error) {
+            DB::rollBack();
             throw $error;
+        }finally{
+            DB::commit();
         }
     }
 }
