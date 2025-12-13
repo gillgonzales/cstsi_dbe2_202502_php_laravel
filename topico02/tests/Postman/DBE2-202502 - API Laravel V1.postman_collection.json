@@ -13,6 +13,7 @@
 				{
 					"name": "INDEX",
 					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
 						"disabledSystemHeaders": {}
 					},
 					"request": {
@@ -24,6 +25,10 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
 						"url": {
 							"raw": "http://{{BASE_URL}}/api/v1/produtos",
 							"protocol": "http",
@@ -69,7 +74,7 @@
 							"variable": [
 								{
 									"key": "produto",
-									"value": "128"
+									"value": "330"
 								}
 							]
 						}
@@ -142,7 +147,7 @@
 							},
 							{
 								"key": "referer",
-								"value": "http://localhost:8000",
+								"value": "http://{{BASE_URL}}",
 								"type": "text"
 							},
 							{
@@ -190,6 +195,11 @@
 									"value": "campo",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "fornecedor_id",
+									"value": "1",
+									"type": "text"
 								}
 							]
 						},
@@ -324,13 +334,14 @@
 							},
 							{
 								"key": "referer",
-								"value": "http://localhost:8083/",
+								"value": "http://{{BASE_URL}}/",
 								"type": "text"
 							},
 							{
 								"key": "X-XSRF-TOKEN",
 								"value": "{{XSRF-TOKEN}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -338,12 +349,12 @@
 							"formdata": [
 								{
 									"key": "nome",
-									"value": "Placa de Vídeo  RTX5060 TI",
+									"value": "Placa de Vídeo  RX7600",
 									"type": "text"
 								},
 								{
 									"key": "descricao",
-									"value": "Placa de Vídeo RTX NVIDIA  TI 8GB",
+									"value": "Placa de Vídeo AMD RX7600 TI 8GB",
 									"type": "text"
 								},
 								{
@@ -365,11 +376,16 @@
 								{
 									"key": "imagem",
 									"type": "file",
-									"src": "/home/g1ll/Pictures/placa-de-video-gigabyte-nvidia-geforce-rtx-4060-eagle-oc-8gb-gddr6-dlss-ray-tracing-gv-n4060eagle-oc-8gd_172916.webp"
+									"src": "/home/g1ll/Pictures/placa-de-video-rx-7600-series-graphics-cards-xfx-amd-radeon-8gb-gddr6-rx-76pqickby_1689273145_gg.webp"
 								},
 								{
 									"key": "fornecedor_id",
 									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "video",
+									"value": "https://www.youtube.com/watch?v=AvsnIgMGyO4",
 									"type": "text"
 								}
 							]
@@ -493,7 +509,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{BEARER_TOKEN_ADMIN}}",
+									"value": "{{TOKEN}}",
 									"type": "string"
 								}
 							]
@@ -541,7 +557,14 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN_ADMIN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -732,7 +755,9 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
-											"pm.sendRequest(\"http://localhost:8000/sanctum/csrf-cookie\", (err, res) => {",
+											"let base_url =  pm.collectionVariables.get('BASE_URL')",
+											"pm.collectionVariables.set('XSRF_TOKEN',null)",
+											"pm.sendRequest(`http://${base_url}/sanctum/csrf-cookie`, (err, res) => {",
 											"    if (err) {",
 											"        console.log(err);",
 											"    } else {",
@@ -751,7 +776,8 @@
 											"});"
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -774,7 +800,8 @@
 									{
 										"key": "X-XSRF-TOKEN",
 										"value": "{{XSRF-TOKEN}}",
-										"type": "text"
+										"type": "text",
+										"disabled": true
 									}
 								],
 								"body": {
@@ -782,25 +809,25 @@
 									"urlencoded": [
 										{
 											"key": "email",
-											"value": "admin@test.dev",
-											"type": "text",
-											"disabled": true
+											"value": "admin@dev.test",
+											"type": "text"
 										},
 										{
 											"key": "password",
 											"value": "adminadmin",
-											"type": "text",
-											"disabled": true
+											"type": "text"
 										},
 										{
 											"key": "email",
 											"value": "gillvelleda@gmail.com",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										},
 										{
 											"key": "password",
 											"value": "12345678",
-											"type": "text"
+											"type": "text",
+											"disabled": true
 										}
 									]
 								},
@@ -1076,7 +1103,8 @@
 											"token && pm.collectionVariables.set(\"TOKEN_ADMIN\", token);"
 										],
 										"type": "text/javascript",
-										"packages": {}
+										"packages": {},
+										"requests": {}
 									}
 								}
 							],
@@ -1087,23 +1115,23 @@
 							},
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN_ADMIN}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "text/html",
-										"type": "text",
-										"disabled": true
-									}
-								],
+								"header": [],
 								"body": {
 									"mode": "urlencoded",
 									"urlencoded": [
 										{
 											"key": "email",
-											"value": "admin@test.dev",
+											"value": "admin@dev.test",
 											"type": "text"
 										},
 										{
@@ -1144,7 +1172,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/api/v1/login",
+									"raw": "http://{{BASE_URL}}/api/v1/token/login",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
@@ -1152,6 +1180,7 @@
 									"path": [
 										"api",
 										"v1",
+										"token",
 										"login"
 									]
 								}
@@ -1209,7 +1238,14 @@
 							"name": "USER BEARER",
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN_ADMIN}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "GET",
 								"header": [
@@ -1220,13 +1256,14 @@
 									}
 								],
 								"url": {
-									"raw": "http://{{BASE_URL}}/api/user",
+									"raw": "http://{{BASE_URL}}/api/v1/user",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
 										"api",
+										"v1",
 										"user"
 									]
 								}
@@ -1523,8 +1560,11 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
-					" //pm.request.headers.add({ key: 'accept', value: 'application/json' })"
+					" pm.request.headers.add({ key: 'accept', value: 'application/json' })",
+					"const XSRF_TOKEN = pm.collectionVariables.get(\"XSRF-TOKEN\");",
+					"if(XSRF_TOKEN) pm.request.headers.add({key: 'X-XSRF-TOKEN', value: XSRF_TOKEN})"
 				]
 			}
 		},
@@ -1533,6 +1573,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -1549,15 +1590,7 @@
 			"value": ""
 		},
 		{
-			"key": "BEARER_TOKEN",
-			"value": ""
-		},
-		{
-			"key": "BEARER_TOKEN_ADMIN",
-			"value": ""
-		},
-		{
-			"key": "TOKEN",
+			"key": "XSRF_TOKEN",
 			"value": ""
 		}
 	]
