@@ -6,25 +6,25 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('ola', function () {
-    echo "Hola Mundo !!!";
-});
+// Route::get('ola', function () {
+//     echo "Hola Mundo !!!";
+// });
 
 
-Route::get('ola', [
-    HomeController::class,
-    'index'
-]);
+// Route::get('ola', [
+//     HomeController::class,
+//     'index'
+// ]);
 
-Route::get('greetings', 'App\Http\Controllers\HomeController@welcome');
+// Route::get('greetings', 'App\Http\Controllers\HomeController@welcome');
 
-Route::get('greetings/{name?}', 'App\Http\Controllers\HomeController@welcome');
+// Route::get('greetings/{name?}', 'App\Http\Controllers\HomeController@welcome');
 
-Route::get('listusers', [HomeController::class, 'listUsers']);
+// Route::get('listusers', [HomeController::class, 'listUsers']);
 
 
 // Route::get('produtos',[ProdutoController::class,'index']);
@@ -98,16 +98,16 @@ Route::get('listusers', [HomeController::class, 'listUsers']);
 
 
 //Exemplo para testar o middleware padrão Auth do laravel
-Route::get('login',function(){
-    echo "<h1>O middleware AUTH redireciona para a rota login se não encontrar uma sessão ativa!!!<h1>";
-    echo "<p>Trabalharemos com middleware de autenticação na API</p>";
-})->name('login');//O laravel internamente prefere usar os nomes
+// Route::get('login',function(){
+//     echo "<h1>O middleware AUTH redireciona para a rota login se não encontrar uma sessão ativa!!!<h1>";
+//     echo "<p>Trabalharemos com middleware de autenticação na API</p>";
+// })->name('login');//O laravel internamente prefere usar os nomes
 
 
 // O controldor deve ser um recurso, seguindo os padrões de nomes dos métodos
-Route::resource('fornecedores',FornecedorController::class)->parameters([
-    "fornecedores"=>"fornecedor"
-]);
+// Route::resource('fornecedores',FornecedorController::class)->parameters([
+//     "fornecedores"=>"fornecedor"
+// ]);
 
 
 // Route::resource('produtos',ProdutoController::class);
@@ -140,13 +140,20 @@ Route::resource('fornecedores',FornecedorController::class)->parameters([
 //             ])->except(['index','show']);
 // });//Restringimos todas as rotas exceto index e show
 
-Route::resource('produtos',ProdutoController::class)->except(['index','show'])->middleware('auth');
+// Route::resource('produtos',ProdutoController::class)->except(['index','show'])->middleware('auth');
 
 //A rota produtos/create estava sendo interpretada como show
 //por isso a rota de show deve ser definida depois da produtos/create
 //Criamos apenas as rotas de index e show com acesso público
-Route::resource('produtos',ProdutoController::class)->only(['index','show']);
+// Route::resource('produtos',ProdutoController::class)->only(['index','show']);
 
 // Route::post('login',[LoginStatefulController::class, 'login']);
 
 // Route::post('logout',[LoginStatefulController::class, 'logout'])->middleware('auth:sanctum');
+
+
+//CONFIGURAÇÃO PARA REDIRECIONAR PARA O FRONTEND REACT
+Route::any('/{any?}', function(){
+    return view('index');
+})->where('any', '^((?!api).)*$');
+

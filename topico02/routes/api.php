@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\LoginStatefulController;
 use App\Http\Controllers\Api\Auth\LoginTokensController;
 use App\Http\Controllers\Api\ProdutoController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\FornecedorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,17 @@ Route::prefix('v1')->group(function () {
 
     //Rotas privadas (sanctum)
     Route::middleware('auth:sanctum')->group(function () {
+
+        Route::get('/user', function (Request $request) {
+        // return $request->user();
+             return $request->user();
+        });
+
+        Route::resource('fornecedores',FornecedorController::class)
+            ->parameters([
+                "fornecedores"=>"fornecedor"
+            ]);
+
         Route::apiResource('produtos', ProdutoController::class)
             ->only(['store', 'update']);
 
@@ -41,8 +53,8 @@ Route::prefix('v1')->group(function () {
         Route::prefix('token')
             ->controller(LoginTokensController::class)
             ->group(function () {
-                Route::post('refresh', 'refresh');
-                Route::post('logout', 'logout');
+                Route::get('refresh', 'refresh');
+                Route::get('logout', 'logout');
             });
 
         Route::middleware('web')->post('logout', [LoginStatefulController::class, 'logout']);
