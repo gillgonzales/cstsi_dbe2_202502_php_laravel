@@ -25,7 +25,7 @@ class ProdutoController extends Controller
     {
         //retornamos uma coleção de modelos de Produto no formato JSON com a classe
         //Resource Collection de Produto.
-        return new ProdutoCollection(Produto::all());
+        return new ProdutoCollection(Produto::all()->load('media'));
     }
 
     /**
