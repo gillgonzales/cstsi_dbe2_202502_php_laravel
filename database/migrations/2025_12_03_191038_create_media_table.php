@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('model_type');
             $table->string('type')->default('image'); //video
             $table->string('source');
+            $table->string('public_id')->nullable();
             $table->timestamps();
         });
     }
