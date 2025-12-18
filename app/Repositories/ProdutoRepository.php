@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Produto;
 use App\Services\ProdutoUploadService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProdutoRepository
@@ -20,12 +21,11 @@ class ProdutoRepository
             DB::beginTransaction();
             $novoProduto->save();
             if (isset($produtoData['imagem'])) {
-                $produtoData['imagem'] = ProdutoUploadService::handleUploadFile($produtoData['imagem']);
-                if (!$produtoData['imagem'])
-                    throw new Exception("Erro ao salvar produto com imagem!!");
+                $uploadedImage = ProdutoUploadService::handleUploadFile($produtoData['imagem']);
 
                 $novoProduto->media()->create([
-                    'source' => $produtoData['imagem']
+                    'source' => $uploadedImage['url'],
+                    'public_id'=> $uploadedImage['public_id']
                 ]);
             }
 
