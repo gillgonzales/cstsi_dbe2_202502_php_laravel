@@ -2,24 +2,28 @@
 
 namespace App\Services;
 
-use App\Http\Requests\ProdutoStoreRequest;
-use App\Http\Requests\ProdutoUpdateRequest;
-use App\Models\Produto;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class ProdutoUploadService
 {
-    private static $path = 'produtos/';
+    private static $path = 'produtos';
 
-    public static function handleUploadFile(UploadedFile $produtoImage): string | null
+    public static function handleUploadFile(UploadedFile $produtoImage): array | null
     {
-        $hashedFileName = $produtoImage->hashName();
-        if (!$produtoImage->store(self::$path, 'public'))
+        $hashFilename = $produtoImage->hashName();
+        $result = Storage::putFile(self::$path, $produtoImage);
+
+        if (!$result)
             throw new Exception("Erro ao salvar imagem do produto!!");
-        if(!Storage::disk('public')->exists(self::$path.$hashedFileName))
-            return null;
-        return $hashedFileName;
+
+        $public_id = self::$path."/$hashFilename";
+        $url = Storage::url($public_id);
+
+        if (!$url)
+            throw new Exception("Erro ao salvar imagem $public_id em Cloudnary!!");
+
+        return compact('url','public_id');
     }
-  }
+}
