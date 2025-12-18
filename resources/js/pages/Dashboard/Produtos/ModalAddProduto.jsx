@@ -83,8 +83,8 @@ const ModalAddProduto = () => {
   }
 
   useEffect(() => {
-    loadFornecedores()
-  }, [listFornecedores]);
+   loadFornecedores()
+  }, []);
 
   return <Modal
     title={`Cadastrar Novo Produto`}
