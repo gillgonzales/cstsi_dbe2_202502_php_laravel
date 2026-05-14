@@ -13,8 +13,14 @@ class ListProductTest extends TestCase
      */
     public function test_listar_todos_os_produtos(): void
     {
+        //ASSETS
         $url = "api/v1/produtos";
+
+        //ACTIONS
         $response = $this->get($url);
+
+
+        //ASSERTS
         $response->assertStatus(200);
         // $response->assertJsonIsArray();
         $response->assertJsonIsObject();
