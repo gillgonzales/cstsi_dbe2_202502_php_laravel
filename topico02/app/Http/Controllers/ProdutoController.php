@@ -29,41 +29,26 @@ class ProdutoController extends Controller
     }
 
     public function store(Request $request){
-        // dd($request->all());
         $novoProduto = $request->all();
-        // dd($novoProduto);
         $novoProduto['importado'] = $request->has('importado');
-        // dd($novoProduto);
         if(Produto::create($novoProduto))
             return redirect('/produtos');
-
         dd("Erro ao inserir produto!!!");
     }
 
-    //Receberá diretamente o modelo de produto de acordo com o id passado na url
-    public function edit(Produto $produto){
-        // $produto = Produto::find($id);//Não é necessário com Route Model Bind
-
-        if($produto)
-            return view('produtos.edit', compact('produto'));
-
-        dd("Produto não encontrado!!!");
+    public function edit($id){
+        $produto = Produto::find($id);
+        if(!$produto) dd("Produto não encontrado!!!");
+        return view('produtos.edit', compact('produto'));
     }
 
-    //Corrigimos os métodos para receber diretamente a Model $produto
-    public function update(Request $request,Produto $produto){//Importante tipar o argumento
-
+    public function update(Request $request, $id){
         $updatedProduto = $request->all();
-
         $updatedProduto['importado'] = $request->has('importado');
+        if(!Produto::find($id)->update($updatedProduto))
+            dd("Erro ao atualizar o produto!!!");
+        return redirect('/produtos');
 
-        // $produtoAtual = Produto::find($id);// Não é mais necessário
-        if($produto){
-            if($produto->update($updatedProduto)){
-                return redirect('/produtos');
-            }
-        }
-        dd("Erro ao atualizar o produto!!!");
     }
 
     // public function delete($id){
