@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -50,10 +53,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
         //Somente usuários alteram o próprio perfil
         //$request->user() tem que ser o mesmo $user
+        try {
+            // if(!$request->user()->can('update',$user))
+            //     throw new AuthorizationException('Sem permissão!!!');
+            Gate::authorize('update',$user);
+            $user->update($request->validated());
+            return new UserResource($user->fresh())->additional(["message"=>"Updated!!!"]);
+        } catch (Exception $error) {
+            return $this->errorHandler("Erro ao atualizar o usuário!!!", $error);
+        }
     }
 
     /**
