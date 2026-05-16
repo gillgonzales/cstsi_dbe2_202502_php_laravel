@@ -13,7 +13,10 @@ use App\Http\Resources\ProdutoUpdatedResource;
 use App\Models\Produto;
 use App\Repositories\ProdutoRepository;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class ProdutoController extends Controller
@@ -68,14 +71,20 @@ class ProdutoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produto $produto)
+    public function destroy(Request $request, Produto $produto)
     {
         try {
+            //Gate com Policy de Produto
+            // if(Gate::denny('delete',$produto))
+            // if(Auth::guard('web')->user()->cannot('delete',$produto))
+            // if(!$request->user()?->can('delete',$produto))
+            //         throw new AuthorizationException('Ação proibida!!!');
+            Gate::authorize('delete',$produto);
             $produto->delete();
             return new ProdutoResource($produto)
-            ->additional(["message"=>"Produto removido com sucesso!!!"]);
-        } catch (Exception $error) {
-            return $this->errorHandler("Erro ao remover o protudo!!!", $error, 500);
+                ->additional(["message"=>"Produto removido com sucesso!!!"]);
+        }catch (Exception $error) {
+            return $this->errorHandler("Erro ao remover o protudo!!!", $error);
         }
     }
 }
