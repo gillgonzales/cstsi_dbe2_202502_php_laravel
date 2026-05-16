@@ -14,11 +14,13 @@ class ProdutoStoreRequest extends FormRequest
     public function authorize(): bool
     {
 
-        // return Gate::forUser($this->user())->allows('create-produto');
-        // Gate::authorize('create-produto');
-        // return $this->user()->can('create-produto');
+        // return Gate::forUser($this->user())->allows('create',Produto::class);
+        // return Gate::authorize('create',Produto::class)->allowed();
+        // return $this->user()->can('create',Produto::class);
         // return Gate::allows('create',Produto::class);
-        return Gate::allows('superuser');
+        // return Gate::allows('superuser');
+
+        return $this->user()->can('create',Produto::class);
     }
 
     /**
