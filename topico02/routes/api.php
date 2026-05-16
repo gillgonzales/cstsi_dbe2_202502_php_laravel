@@ -28,13 +28,22 @@ Route::prefix('v1')->group(function () {
             return $request->user();
         });
 
-        Route::apiResource('produtos', ProdutoController::class)
-            ->only(['store', 'update'])
-            ->middleware('ability:is_admin,is_manager');
+        // Route::apiResource('produtos', ProdutoController::class)
+        //     ->only(['store', 'update'])
+        //     ->middleware('ability:is_admin,is_manager');
 
-        Route::apiResource('produtos', ProdutoController::class)
-            ->only(['destroy'])
-            ->middleware('ability:is_admin'); //Apenas o Admin remove produtos da base
+        // Route::apiResource('produtos', ProdutoController::class)
+        //     ->only(['destroy'])
+        //     ->middleware('ability:is_admin'); //Apenas o Admin remove produtos da base
+
+        Route::controller(ProdutoController::class)->group(function (){
+                Route::middleware('ability:is_admin,is_manager')
+                    ->group(function () {
+                          Route::post('produtos','store');
+                          Route::put('produtos/{produto}','update');
+                    });
+                Route::delete('produtos/{produto}','destroy')->middleware('ability:is_admin');
+        });
 
         Route::apiResource('users', UserController::class)->except(['index', 'store']);
 
