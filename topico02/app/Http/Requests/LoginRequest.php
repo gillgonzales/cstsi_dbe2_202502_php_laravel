@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class LoginRequest extends FormRequest
 {
@@ -24,6 +25,14 @@ class LoginRequest extends FormRequest
         return [
             'email'     => ' required | exists:users',
             'password'  => ' required | string',
+        ];
+    }
+
+    #[Override]
+    public function messages()
+    {
+        return [
+            'email.exists'=>"Dados inválidos",
         ];
     }
 }
