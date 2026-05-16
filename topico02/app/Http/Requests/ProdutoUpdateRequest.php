@@ -14,7 +14,7 @@ class ProdutoUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         // return Gate::authorize('update',[Produto::class, 'update'])->allowed();
-        // return Gate::allows('update',[Produto::class,'update']);
+        // return Gate::allows('update',ProdutoPolicy::class);
         return $this->user()->can('update',Produto::class);
     }
 
