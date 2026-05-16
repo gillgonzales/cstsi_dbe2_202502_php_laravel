@@ -22,29 +22,38 @@ Route::prefix('v1')->group(function () {
         Route::post('login', [LoginTokensController::class, 'login']);
     });
 
-    //Rotas privadas (sanctum)
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('produtos', ProdutoController::class)
-            ->only(['store', 'update']);
+    //Rotas privadas (sanctum cookies)
+    Route::middleware(['auth:sanctum', 'web'])->group(function () {
+        Route::get('user', function (Request $request) {
+            return $request->user();
+        });
 
         Route::apiResource('produtos', ProdutoController::class)
-            ->only(['delete'])
-            ->middleware('ability:is-admin'); //Apenas o Admin remove produtos da base
+            ->only(['store', 'update'])
+            ->middleware('ability:is_admin,is_manager');
 
-        Route::apiResource('users', UserController::class)->except(['index']);
+        Route::apiResource('produtos', ProdutoController::class)
+            ->only(['destroy'])
+            ->middleware('ability:is_admin'); //Apenas o Admin remove produtos da base
+
+        Route::apiResource('users', UserController::class)->except(['index', 'store']);
 
         Route::apiResource('users', UserController::class)
             ->only(['index'])
-            ->middleware('ability:is-admin'); //Apenas Admin lista usuários
+            ->middleware('ability:is_admin'); //Apenas Admin lista usuários
 
-
-        Route::prefix('token')
-            ->controller(LoginTokensController::class)
-            ->group(function () {
-                Route::post('refresh', 'refresh');
-                Route::post('logout', 'logout');
-            });
-
-        Route::middleware('web')->post('logout', [LoginStatefulController::class, 'logout']);
+        Route::post('logout', [LoginStatefulController::class, 'logout']);
     });
+
+   //Rotas privadas (sanctum tokens)
+    Route::prefix('token')
+        ->middleware('auth:sanctum')
+        ->controller(LoginTokensController::class)
+        ->group(function () {
+            Route::post('refresh', 'refresh');
+            Route::post('logout', 'logout');
+            Route::get('user', function (Request $request) {
+                    return $request->user()->currentAccessToken();
+            });
+        });
 });
