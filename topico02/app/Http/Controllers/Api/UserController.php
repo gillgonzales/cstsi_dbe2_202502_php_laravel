@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        if(!$request->user()->tokenCan('is-admin'))
+        if(!$request->user()->tokenCan('is_admin'))
             return response()->json(['error'=>'Usuário não tem permissão!!'],401);
         return new UserResourceCollection(User::all());
 

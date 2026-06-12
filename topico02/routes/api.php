@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function () {
     });
 
     //Rotas privadas (sanctum cookies)
-    Route::middleware(['auth:sanctum', 'web'])->group(function () {
+    Route::middleware(['web','auth:sanctum'])->group(function () {
         Route::get('user', function (Request $request) {
             return $request->user();
         });
@@ -59,7 +59,7 @@ Route::prefix('v1')->group(function () {
         ->middleware('auth:sanctum')
         ->controller(LoginTokensController::class)
         ->group(function () {
-            Route::post('refresh', 'refresh');
+            Route::get('refresh', 'refresh');
             Route::post('logout', 'logout');
             Route::get('user', function (Request $request) {
                     return $request->user()->currentAccessToken();
