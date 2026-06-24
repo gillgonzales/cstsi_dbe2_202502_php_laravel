@@ -61,3 +61,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware('web')->post('logout', [LoginStatefulController::class, 'logout']);
     });
 });
+
+Route::get('cors',function(){
+    dd(explode(';',env('FRONTEND_URL','*')));
+});
