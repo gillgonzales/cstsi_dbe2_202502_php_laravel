@@ -43,11 +43,11 @@ Route::prefix('v1')->group(function () {
             ->only(['delete'])
             ->middleware('ability:is-admin'); //Apenas o Admin remove produtos da base
 
-        Route::apiResource('users', UserController::class)
-            ->except(['index']);
+        // Route::apiResource('users', UserController::class)
+        //     ->except(['index']);
 
         Route::apiResource('users', UserController::class)
-            ->only(['index'])
+            // ->only(['index'])
             ->middleware('ability:is-admin'); //Apenas Admin lista usuários
 
 
